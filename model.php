@@ -40,30 +40,29 @@ function get_post_by_id($id)
 	return $row;
 }
 
+
 function addPost($name,$info)
 {
+	$link = new mysqli("localhost", "blogadmin", "blogadmin", "blog_db");
+	
+	$q = "INSERT INTO post (id, title, date, body) VALUES (NULL, '$name' , CURRENT_TIMESTAMP, '$info')";
+	
+	if (strlen ($name)>5) {
+		if (strlen($info)>50) {
+			if ( !$link->query($q) ) {
+    			echo '<script>window.alert("Algo ha salido mal con la conexion a la DB :(");</script>';
+    		} else {
+    			echo '<script>window.alert("Post añadido con exito!")</script>';
+    		}
+		} else {
+			echo '<script>window.alert("Cuentanos un poco mas sobre tu coche! (min 50 caracteres)");</script>';
+		}
+	} else {
+		echo '<script>window.alert("Pero que nombre mas pequeño no? (min 5 caracteres)");</script>';
+	}
+	
 	
 
-	$link = open_database_connection();
-	$query = 'INSERT INTO post (id, title, date, body) VALUES (NULL, "'.$name.'", CURRENT_TIMESTAMP, "'.$info.'"")';
-
-
-
-	if (mysqli_query($link, $query)) {
-		echo '<script>';
-	  	echo 'console.log("INSERTADO")';
-	  	echo '</script>';
-    	return "funciona";
-	} else {
-		echo '<script>';
-	  	echo 'console.log("ERRO")';
-	  	echo '</script>';
-	    return "No funciona";
-	}
-
-	close_database_connection($link);
 }
-
-
 
 ?>
